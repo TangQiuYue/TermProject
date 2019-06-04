@@ -16,7 +16,13 @@ public class Az3Eval2BourassaMarieEve {
      */
     public static void main(String[] args) {
         ArticleVue vue = new ArticleVue();
-        vue.setVisible(true);
+        ModelVueArticles model = new ModelVueArticles();
+        ControleurArticles control = new ControleurArticles(vue, model);
+        
+       vue.setVisible(true);
+  
+      
+       
     }
     
 }

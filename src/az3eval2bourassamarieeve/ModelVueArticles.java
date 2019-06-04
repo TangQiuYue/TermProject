@@ -38,14 +38,29 @@ public class ModelVueArticles {
         return connect;
     }
 
-    public void getArticles() {
+    public Articles getArticles() {
+        String codesArticles = "", designationArticles = "";
+        int codeCategories = 0;
+        double prixUnitaire = 0.0;
         try {
             connect = DriverManager.getConnection(url, user, passwd);
             stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            sqlString = "Select * from ARTICLES";
+            // sqlString = "Select * from ARTICLES";
+           // sqlString = "Select * from ARTICLES fetch first row only";
+           sqlString = "Select * from ARTICLES ORDER BY sortable_column Where ROW = 2";
+            /*
+SELECT * FROM (
+    SELECT * FROM table_name ORDER BY sortable_column DESC
+) WHERE ROWNUM = 1;*/
+
+            //  stmt.setMaxRows(1); 
             resSet = stmt.executeQuery(sqlString);
+            //  resSet.next();
             while (resSet.next()) {
-                System.out.println(resSet.getString(2));
+                codesArticles = resSet.getString(1);
+                designationArticles = resSet.getString(2);
+                codeCategories = resSet.getInt(3);
+                prixUnitaire = resSet.getDouble(4);
             }
 
         } catch (Exception ex) {
@@ -60,8 +75,10 @@ public class ModelVueArticles {
             }
 
         }
+        return new Articles(codesArticles, designationArticles, codeCategories, prixUnitaire);
     }
-        public void modifyArticles(String  codesArticles, String designationArticles, int codeCategories, double prixUnitaire) {
+
+    public void modifyArticles(String codesArticles, String designationArticles, int codeCategories, double prixUnitaire) {
         try {
             connect = DriverManager.getConnection(url, user, passwd);
             stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -85,9 +102,8 @@ public class ModelVueArticles {
             }
         }
     }
-    
-    
-     public void deleteArticles(String codeArticles) {
+
+    public void deleteArticles(String codeArticles) {
         try {
             connect = DriverManager.getConnection(url, user, passwd);
             stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -108,8 +124,8 @@ public class ModelVueArticles {
             }
         }
     }
-    
-    public void addArticles(String  codesArticles, String designationArticles, int codeCategories, double prixUnitaire) {
+
+    public void addArticles(String codesArticles, String designationArticles, int codeCategories, double prixUnitaire) {
         try {
             connect = DriverManager.getConnection(url, user, passwd);
             stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -134,6 +150,5 @@ public class ModelVueArticles {
             }
         }
     }
-    
-    
+
 }

@@ -17,10 +17,10 @@ import javax.swing.JTextField;
  */
 public class ArticleVue extends JFrame {
 
-    private JButton jButton1;
-    private JButton jButton2;
-    private JButton jButton3;
-    private JButton jButton4;
+    private JButton jButtonDebut;
+    private JButton jButtonPrecedent;
+    private JButton jButtonSuivant;
+    private JButton jButtonDernier;
     private JButton jButtonAjouter;
     private JButton jButtonAnnuler;
     private JButton jButtonModifier;
@@ -37,7 +37,10 @@ public class ArticleVue extends JFrame {
     private JTextField jTextFieldPrixUnitaire;
 
     public ArticleVue() {
-  jLabelCodeArticles = new javax.swing.JLabel();
+
+        setLocation(500, 250);
+
+        jLabelCodeArticles = new javax.swing.JLabel();
         jLabelDesignationArticles = new javax.swing.JLabel();
         jLabelCodeCategorie = new javax.swing.JLabel();
         jLabelPrixUnitaire = new javax.swing.JLabel();
@@ -51,10 +54,10 @@ public class ArticleVue extends JFrame {
         jButtonSupprimer = new javax.swing.JButton();
         jButtonAjouter = new javax.swing.JButton();
         jButtonAnnuler = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jButtonDebut = new javax.swing.JButton();
+        jButtonPrecedent = new javax.swing.JButton();
+        jButtonSuivant = new javax.swing.JButton();
+        jButtonDernier = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Table Articles");
@@ -75,20 +78,17 @@ public class ArticleVue extends JFrame {
         jButtonModifier.setMinimumSize(new java.awt.Dimension(100, 23));
         jButtonModifier.setPreferredSize(new java.awt.Dimension(100, 23));
 
-
         jButtonNouveau.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
         jButtonNouveau.setText("Nouveau");
         jButtonNouveau.setMaximumSize(new java.awt.Dimension(100, 23));
         jButtonNouveau.setMinimumSize(new java.awt.Dimension(100, 23));
         jButtonNouveau.setPreferredSize(new java.awt.Dimension(100, 23));
 
-
         jButtonSupprimer.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
         jButtonSupprimer.setText("Supprimer");
         jButtonSupprimer.setMaximumSize(new java.awt.Dimension(100, 23));
         jButtonSupprimer.setMinimumSize(new java.awt.Dimension(100, 23));
         jButtonSupprimer.setPreferredSize(new java.awt.Dimension(100, 23));
-
 
         jButtonAjouter.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
         jButtonAjouter.setText("Ajouter");
@@ -104,96 +104,197 @@ public class ArticleVue extends JFrame {
         jButtonAnnuler.setMinimumSize(new java.awt.Dimension(100, 23));
         jButtonAnnuler.setPreferredSize(new java.awt.Dimension(100, 23));
 
+        jButtonDebut.setText("<<");
 
-        jButton1.setText("<<");
+        jButtonPrecedent.setText("<");
 
+        jButtonSuivant.setText(">");
 
-        jButton2.setText("<");
-
-        jButton3.setText(">");
-
-        jButton4.setText(">>");
+        jButtonDernier.setText(">>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelDesignationArticles)
-                    .addComponent(jLabelCodeArticles)
-                    .addComponent(jLabelCodeCategorie)
-                    .addComponent(jLabelPrixUnitaire)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)))
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextFieldPrixUnitaire, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldCodeArticles, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldDesignationArticles, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldCodeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4)))
-                .addGap(30, 30, 30)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonModifier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonNouveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonSupprimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonAjouter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabelDesignationArticles)
+                                .addComponent(jLabelCodeArticles)
+                                .addComponent(jLabelCodeCategorie)
+                                .addComponent(jLabelPrixUnitaire)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonDebut)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jButtonPrecedent)))
+                        .addGap(34, 34, 34)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTextFieldPrixUnitaire, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextFieldCodeArticles, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextFieldDesignationArticles, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextFieldCodeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonSuivant)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jButtonDernier)))
+                        .addGap(30, 30, 30)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jButtonModifier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonNouveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonSupprimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonAjouter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(15, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonNouveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
-                        .addComponent(jButtonModifier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
-                        .addComponent(jButtonSupprimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52)
-                        .addComponent(jButtonAjouter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
-                        .addComponent(jButtonAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(27, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabelCodeArticles)
-                                    .addComponent(jTextFieldCodeArticles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(16, 16, 16)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabelDesignationArticles)
-                                    .addComponent(jTextFieldDesignationArticles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(16, 16, 16)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabelCodeCategorie)
-                                    .addComponent(jTextFieldCodeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(16, 16, 16)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabelPrixUnitaire)
-                                    .addComponent(jTextFieldPrixUnitaire, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButton1)
-                                    .addComponent(jButton2)
-                                    .addComponent(jButton3)
-                                    .addComponent(jButton4))))
-                        .addGap(25, 25, 25))))
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonNouveau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(16, 16, 16)
+                                        .addComponent(jButtonModifier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(16, 16, 16)
+                                        .addComponent(jButtonSupprimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(52, 52, 52)
+                                        .addComponent(jButtonAjouter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(16, 16, 16)
+                                        .addComponent(jButtonAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addContainerGap(27, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                .addComponent(jLabelCodeArticles)
+                                                                .addComponent(jTextFieldCodeArticles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGap(16, 16, 16)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                .addComponent(jLabelDesignationArticles)
+                                                                .addComponent(jTextFieldDesignationArticles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGap(16, 16, 16)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                .addComponent(jLabelCodeCategorie)
+                                                                .addComponent(jTextFieldCodeCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGap(16, 16, 16)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                .addComponent(jLabelPrixUnitaire)
+                                                                .addComponent(jTextFieldPrixUnitaire, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                                .addComponent(jButtonDebut)
+                                                                .addComponent(jButtonPrecedent)
+                                                                .addComponent(jButtonSuivant)
+                                                                .addComponent(jButtonDernier))))
+                                        .addGap(25, 25, 25))))
         );
 
         pack();
     }
+
+    public JButton getjButtonDebut() {
+        return jButtonDebut;
+    }
+
+    public void setjButtonDebut(JButton jButtonDebut) {
+        this.jButtonDebut = jButtonDebut;
+    }
+
+    public JButton getjButtonPrecedent() {
+        return jButtonPrecedent;
+    }
+
+    public void setjButtonPrecedent(JButton jButtonPrecedent) {
+        this.jButtonPrecedent = jButtonPrecedent;
+    }
+
+    public JButton getjButtonSuivant() {
+        return jButtonSuivant;
+    }
+
+    public void setjButtonSuivant(JButton jButtonSuivant) {
+        this.jButtonSuivant = jButtonSuivant;
+    }
+
+    public JButton getjButtonDernier() {
+        return jButtonDernier;
+    }
+
+    public void setjButtonDernier(JButton jButtonDernier) {
+        this.jButtonDernier = jButtonDernier;
+    }
+
+    public JButton getjButtonAjouter() {
+        return jButtonAjouter;
+    }
+
+    public void setjButtonAjouter(JButton jButtonAjouter) {
+        this.jButtonAjouter = jButtonAjouter;
+    }
+
+    public JButton getjButtonAnnuler() {
+        return jButtonAnnuler;
+    }
+
+    public void setjButtonAnnuler(JButton jButtonAnnuler) {
+        this.jButtonAnnuler = jButtonAnnuler;
+    }
+
+    public JButton getjButtonModifier() {
+        return jButtonModifier;
+    }
+
+    public void setjButtonModifier(JButton jButtonModifier) {
+        this.jButtonModifier = jButtonModifier;
+    }
+
+    public JButton getjButtonNouveau() {
+        return jButtonNouveau;
+    }
+
+    public void setjButtonNouveau(JButton jButtonNouveau) {
+        this.jButtonNouveau = jButtonNouveau;
+    }
+
+    public JButton getjButtonSupprimer() {
+        return jButtonSupprimer;
+    }
+
+    public void setjButtonSupprimer(JButton jButtonSupprimer) {
+        this.jButtonSupprimer = jButtonSupprimer;
+    }
+
+    public JTextField getjTextFieldCodeArticles() {
+        return jTextFieldCodeArticles;
+    }
+
+    public void setjTextFieldCodeArticles(JTextField jTextFieldCodeArticles) {
+        this.jTextFieldCodeArticles = jTextFieldCodeArticles;
+    }
+
+    public JTextField getjTextFieldCodeCategorie() {
+        return jTextFieldCodeCategorie;
+    }
+
+    public void setjTextFieldCodeCategorie(JTextField jTextFieldCodeCategorie) {
+        this.jTextFieldCodeCategorie = jTextFieldCodeCategorie;
+    }
+
+    public JTextField getjTextFieldDesignationArticles() {
+        return jTextFieldDesignationArticles;
+    }
+
+    public void setjTextFieldDesignationArticles(JTextField jTextFieldDesignationArticles) {
+        this.jTextFieldDesignationArticles = jTextFieldDesignationArticles;
+    }
+
+    public JTextField getjTextFieldPrixUnitaire() {
+        return jTextFieldPrixUnitaire;
+    }
+
+    public void setjTextFieldPrixUnitaire(JTextField jTextFieldPrixUnitaire) {
+        this.jTextFieldPrixUnitaire = jTextFieldPrixUnitaire;
+    }
+
 }
