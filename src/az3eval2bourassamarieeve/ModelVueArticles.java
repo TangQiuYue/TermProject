@@ -38,7 +38,7 @@ public class ModelVueArticles {
         return connect;
     }
 
-    public Articles getArticles() {
+    public Articles getArticles() throws SQLException {
         String codesArticles = "", designationArticles = "";
         int codeCategories = 0;
         double prixUnitaire = 0.0;
@@ -46,16 +46,44 @@ public class ModelVueArticles {
             connect = DriverManager.getConnection(url, user, passwd);
             stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             // sqlString = "Select * from ARTICLES";
-           // sqlString = "Select * from ARTICLES fetch first row only";
-           sqlString = "Select * from ARTICLES ORDER BY sortable_column Where ROW = 2";
-            /*
-SELECT * FROM (
-    SELECT * FROM table_name ORDER BY sortable_column DESC
-) WHERE ROWNUM = 1;*/
-
+            sqlString = "Select * from ARTICLES fetch first row only";
+            
             //  stmt.setMaxRows(1); 
             resSet = stmt.executeQuery(sqlString);
             //  resSet.next();
+            while (resSet.next()) {
+                codesArticles = resSet.getString(1);
+                designationArticles = resSet.getString(2);
+                codeCategories = resSet.getInt(3);
+                prixUnitaire = resSet.getDouble(4);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                resSet.close();
+                stmt.close();
+                connect.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ModelVueArticles.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        return new Articles(codesArticles, designationArticles, codeCategories, prixUnitaire);
+    }
+    
+     public Articles getLastArticle() throws SQLException {
+        String codesArticles = "", designationArticles = "";
+        int codeCategories = 0;
+        double prixUnitaire = 0.0;
+        try {
+            connect = DriverManager.getConnection(url, user, passwd);
+            stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            sqlString = "Select * from ARTICLES";
+
+            resSet = stmt.executeQuery(sqlString);
+            resSet.next();
             while (resSet.next()) {
                 codesArticles = resSet.getString(1);
                 designationArticles = resSet.getString(2);
