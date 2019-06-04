@@ -28,6 +28,10 @@ public class ModelVueArticles {
     private Statement stmt;
     private ResultSet resSet;
 
+    String codesArticles = "", designationArticles = "";
+    int codeCategories = 0;
+    double prixUnitaire = 0.0;
+
     public Connection connectToBD() {
         try {
             connect = DriverManager.getConnection(url, user, passwd);
@@ -39,15 +43,12 @@ public class ModelVueArticles {
     }
 
     public Articles getArticles() throws SQLException {
-        String codesArticles = "", designationArticles = "";
-        int codeCategories = 0;
-        double prixUnitaire = 0.0;
         try {
             connect = DriverManager.getConnection(url, user, passwd);
             stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             // sqlString = "Select * from ARTICLES";
             sqlString = "Select * from ARTICLES fetch first row only";
-            
+
             //  stmt.setMaxRows(1); 
             resSet = stmt.executeQuery(sqlString);
             //  resSet.next();
@@ -72,8 +73,8 @@ public class ModelVueArticles {
         }
         return new Articles(codesArticles, designationArticles, codeCategories, prixUnitaire);
     }
-    
-     public Articles getLastArticle() throws SQLException {
+
+    public Articles getLastArticle() throws SQLException {
         String codesArticles = "", designationArticles = "";
         int codeCategories = 0;
         double prixUnitaire = 0.0;
@@ -177,6 +178,7 @@ public class ModelVueArticles {
                 Logger.getLogger(ModelVueArticles.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
     }
 
 }
