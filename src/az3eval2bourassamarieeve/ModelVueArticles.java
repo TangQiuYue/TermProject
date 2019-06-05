@@ -10,8 +10,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -42,23 +45,22 @@ public class ModelVueArticles {
         return connect;
     }
 
-    public Articles getArticles() throws SQLException {
+    public ArrayList<Articles> getArticles() throws SQLException {
+        ArrayList<Articles> ArticlesList = new ArrayList<>();
         try {
             connect = DriverManager.getConnection(url, user, passwd);
             stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            // sqlString = "Select * from ARTICLES";
-            sqlString = "Select * from ARTICLES fetch first row only";
+             sqlString = "Select * from ARTICLES";
 
-            //  stmt.setMaxRows(1); 
             resSet = stmt.executeQuery(sqlString);
-            //  resSet.next();
+                    resSet.next();
             while (resSet.next()) {
                 codesArticles = resSet.getString(1);
                 designationArticles = resSet.getString(2);
                 codeCategories = resSet.getInt(3);
                 prixUnitaire = resSet.getDouble(4);
+                ArticlesList.add(new Articles(codesArticles, designationArticles, codeCategories, prixUnitaire));
             }
-
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
@@ -71,40 +73,7 @@ public class ModelVueArticles {
             }
 
         }
-        return new Articles(codesArticles, designationArticles, codeCategories, prixUnitaire);
-    }
-
-    public Articles getLastArticle() throws SQLException {
-        String codesArticles = "", designationArticles = "";
-        int codeCategories = 0;
-        double prixUnitaire = 0.0;
-        try {
-            connect = DriverManager.getConnection(url, user, passwd);
-            stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            sqlString = "Select * from ARTICLES";
-
-            resSet = stmt.executeQuery(sqlString);
-            resSet.next();
-            while (resSet.next()) {
-                codesArticles = resSet.getString(1);
-                designationArticles = resSet.getString(2);
-                codeCategories = resSet.getInt(3);
-                prixUnitaire = resSet.getDouble(4);
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                resSet.close();
-                stmt.close();
-                connect.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ModelVueArticles.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-        return new Articles(codesArticles, designationArticles, codeCategories, prixUnitaire);
+        return ArticlesList;
     }
 
     public void modifyArticles(String codesArticles, String designationArticles, int codeCategories, double prixUnitaire) {
@@ -166,7 +135,7 @@ public class ModelVueArticles {
             resSet.updateInt(3, codeCategories);
             resSet.updateDouble(4, prixUnitaire);
             resSet.insertRow();
-            System.out.println("New Article inserted into Database Successfully");
+            JOptionPane.showMessageDialog(null, "L'article a bien été ajouter!");
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {

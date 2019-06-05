@@ -15,6 +15,9 @@ public class Articles {
     private int codeCategories;
     private double prixUnitaire;
 
+    public Articles() {
+    }
+
     public Articles(String codesArticles, String designationArticles, int codeCategories, double prixUnitaire) {
         this.codesArticles = codesArticles;
         this.designationArticles = designationArticles;
