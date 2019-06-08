@@ -26,7 +26,6 @@ public class ControleurArticles {
 
     public ControleurArticles(ArticleVue vue, ModelVueArticles model) throws SQLException {
         try {
-
             this.vue = vue;
             this.model = model;
             article = new Articles();
@@ -50,12 +49,7 @@ public class ControleurArticles {
 
             vue.getjButtonDernier().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if (i == ArticlesList.size() - 1) {
-                        JOptionPane.showMessageDialog(null, "Vous êtes déjà au dernier enregistrement");
-                    } else {
-                        i = ArticlesList.size() - 1;
-                        getRow(vue, ArticlesList, i);
-                    }
+                    getDernier();
                 }
             });
             vue.getjButtonSuivant().addActionListener(new ActionListener() {
@@ -131,19 +125,18 @@ public class ControleurArticles {
                         vue.getjButtonNouveau().setEnabled(true);
                         vue.getjButtonModifier().setEnabled(true);
                         vue.getjButtonSupprimer().setEnabled(true);
-                         getRow(vue, ArticlesList, i);
                     }
 
                     if (modifierActif == true) {
 
                     }
-//                    try {
-//                        refreshList();
-//                        i = ArticlesList.size() - 1;
-//                       
-//                    } catch (SQLException ref) {
-//                        JOptionPane.showMessageDialog(null, "Je n'ai pas pus mettre la base de donner a jours");
-//                    }
+                    try {
+                        refreshList();
+                        i = ArticlesList.size() - 1;
+                        getRow(vue, ArticlesList, i);
+                    } catch (SQLException ref) {
+                        JOptionPane.showMessageDialog(null, "Je n'ai pas pus mettre la base de donner a jours");
+                    }
                 }
             });
 
@@ -185,10 +178,8 @@ public class ControleurArticles {
                     }
                 }
             });
-
-        } catch (IndexOutOfBoundsException e) {
-            i = 0;
-
+        }catch(Exception a){
+            a.getMessage();
         }
     }
 
@@ -210,8 +201,13 @@ public class ControleurArticles {
     }
 
     public void refreshList() throws SQLException {
-       getRow(vue, ArticlesList, i);
-      
+
+        ArticlesList = model.getArticles();
+        getRow(vue, ArticlesList, i);
+        for (int j = 0; j < ArticlesList.size() - 1; j++) {
+            System.out.println("j" + j + ArticlesList.get(j).getCodesArticles());
+        }
+        System.out.println(i);
     }
 
     public void setButtonsEnabledDisabled() {
@@ -219,5 +215,15 @@ public class ControleurArticles {
 
         }
 
+    }
+
+    public void getDernier() {
+
+        if (i == ArticlesList.size() - 1) {
+            JOptionPane.showMessageDialog(null, "Vous êtes déjà au dernier enregistrement");
+        } else {
+            i = ArticlesList.size() - 1;
+            getRow(vue, ArticlesList, i);
+        }
     }
 }
