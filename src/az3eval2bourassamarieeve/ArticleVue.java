@@ -17,7 +17,7 @@ import javax.swing.JTextField;
  */
 public class ArticleVue extends JFrame {
 
-    private JButton jButtonDebut;
+    private JButton jButtonPremier;
     private JButton jButtonPrecedent;
     private JButton jButtonSuivant;
     private JButton jButtonDernier;
@@ -55,7 +55,7 @@ public class ArticleVue extends JFrame {
         jButtonSupprimer = new JButton();
         jButtonAjouter = new JButton();
         jButtonAnnuler = new JButton();
-        jButtonDebut = new JButton();
+        jButtonPremier = new JButton();
         jButtonPrecedent = new JButton();
         jButtonSuivant = new JButton();
         jButtonDernier = new JButton();
@@ -106,7 +106,7 @@ public class ArticleVue extends JFrame {
         jButtonAnnuler.setMinimumSize(new java.awt.Dimension(100, 23));
         jButtonAnnuler.setPreferredSize(new java.awt.Dimension(100, 23));
 
-        jButtonDebut.setText("<<");
+        jButtonPremier.setText("<<");
 
         jButtonPrecedent.setText("<");
 
@@ -120,8 +120,7 @@ public class ArticleVue extends JFrame {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,7 +131,7 @@ public class ArticleVue extends JFrame {
                             .addComponent(jLabelCodeCategorie)
                             .addComponent(jLabelPrixUnitaire)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonDebut)
+                                .addComponent(jButtonPremier)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButtonPrecedent)))
                         .addGap(34, 34, 34)
@@ -157,8 +156,7 @@ public class ArticleVue extends JFrame {
                     .addComponent(jButtonAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,7 +194,7 @@ public class ArticleVue extends JFrame {
                                 .addComponent(jLabelInstructions, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jButtonDebut)
+                                    .addComponent(jButtonPremier)
                                     .addComponent(jButtonPrecedent)
                                     .addComponent(jButtonSuivant)
                                     .addComponent(jButtonDernier))))
@@ -207,12 +205,12 @@ public class ArticleVue extends JFrame {
     }
     
 
-    public JButton getjButtonDebut() {
-        return jButtonDebut;
+    public JButton getjButtonPremier() {
+        return jButtonPremier;
     }
 
-    public void setjButtonDebut(JButton jButtonDebut) {
-        this.jButtonDebut = jButtonDebut;
+    public void setjButtonPremier(JButton jButtonPremier) {
+        this.jButtonPremier = jButtonPremier;
     }
 
     public JButton getjButtonPrecedent() {
