@@ -80,7 +80,7 @@ public class ModelVueArticles {
         try {
             connect = DriverManager.getConnection(url, user, passwd);
             stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            sqlString = "Select * from Articles where Codes Articles = " + codesArticles;
+            sqlString = "Select * from ARTICLES where CODESARTICLES = " + codesArticles.toUpperCase();
             resSet = stmt.executeQuery(sqlString);
             resSet.next();
             resSet.updateString(2, designationArticles);

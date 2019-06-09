@@ -19,7 +19,6 @@ public class ControleurArticles {
 
     private ArticleVue vue;
     private ModelVueArticles model;
-    private Articles article;
     private ArrayList<Articles> ArticlesList;
     private int i;
     private boolean nouveauActif, modifierActif;
@@ -28,22 +27,16 @@ public class ControleurArticles {
         try {
             this.vue = vue;
             this.model = model;
-            article = new Articles();
             i = 0;
             nouveauActif = false;
             modifierActif = false;
-            ArrayList<Articles> ArticlesList = model.getArticles();
+            ArrayList<Articles> ArticlesList = refreshList();
             setTooTip();
             getRow(vue, ArticlesList, i);
 
             vue.getjButtonPremier().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if (i == 0) {
-                        JOptionPane.showMessageDialog(null, "Vous êtes déjà au premier enregistrement");
-                    } else {
-                        i = 0;
-                        getRow(vue, ArticlesList, i);
-                    }
+                    getPremier();
                 }
             });
 
@@ -52,26 +45,16 @@ public class ControleurArticles {
                     getDernier();
                 }
             });
+
             vue.getjButtonSuivant().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if (i == ArticlesList.size() - 1) {
-                        JOptionPane.showMessageDialog(null, "Vous êtes au derniers enregistrement");
-                    } else {
-                        i++;
-                        getRow(vue, ArticlesList, i);
-                    }
+                    next();
                 }
             });
 
             vue.getjButtonPrecedent().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if (i == 0) {
-                        JOptionPane.showMessageDialog(null, "Vous êtes au premier enregistrement");
-                    } else {
-                        i--;
-                        getRow(vue, ArticlesList, i);
-                    }
-
+                    previous();
                 }
             });
 
@@ -79,21 +62,7 @@ public class ControleurArticles {
                 public void actionPerformed(ActionEvent e) {
 
                     try {
-                        vue.getjTextFieldCodeArticles().setText("");
-                        vue.getjTextFieldDesignationArticles().setText("");
-                        vue.getjTextFieldCodeCategorie().setText("");
-                        vue.getjTextFieldPrixUnitaire().setText("");
-                        vue.getjButtonAjouter().setEnabled(true);
-                        vue.getjButtonAnnuler().setEnabled(true);
-                        vue.getjButtonSuivant().setEnabled(false);
-                        vue.getjButtonPrecedent().setEnabled(false);
-                        vue.getjButtonPremier().setEnabled(false);
-                        vue.getjButtonDernier().setEnabled(false);
-                        vue.getjButtonNouveau().setEnabled(false);
-                        vue.getjButtonModifier().setEnabled(false);
-                        vue.getjButtonSupprimer().setEnabled(false);
-                        vue.getjLabelInstructions().setText("Entrez les informations requise");
-                        vue.getjLabelInstructions().setVisible(true);
+                        setInfo();
                         nouveauActif = true;
 
                     } catch (Exception p) {
@@ -104,31 +73,28 @@ public class ControleurArticles {
 
             vue.getjButtonAjouter().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-
-                    if (nouveauActif == true) {
-
                         String codesArticles, designationArticles;
                         int codeCategories;
                         double prixUnitaire;
+                    if (nouveauActif == true) {
                         codesArticles = vue.getjTextFieldCodeArticles().getText();
                         designationArticles = vue.getjTextFieldDesignationArticles().getText();
                         codeCategories = Integer.parseInt(vue.getjTextFieldCodeCategorie().getText());
                         prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
                         model.addArticles(codesArticles, designationArticles, codeCategories, prixUnitaire);
                         nouveauActif = false;
-                        vue.getjButtonAjouter().setEnabled(false);
-                        vue.getjButtonAnnuler().setEnabled(false);
-                        vue.getjButtonSuivant().setEnabled(true);
-                        vue.getjButtonPrecedent().setEnabled(true);
-                        vue.getjButtonPremier().setEnabled(true);
-                        vue.getjButtonDernier().setEnabled(true);
-                        vue.getjButtonNouveau().setEnabled(true);
-                        vue.getjButtonModifier().setEnabled(true);
-                        vue.getjButtonSupprimer().setEnabled(true);
+                        setButtons();
+
                     }
 
                     if (modifierActif == true) {
-
+                        System.out.println("I went to the right place");
+                        codesArticles = vue.getjTextFieldCodeArticles().getText();
+                        designationArticles = vue.getjTextFieldDesignationArticles().getText();
+                        codeCategories = Integer.parseInt(vue.getjTextFieldCodeCategorie().getText());
+                        prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
+                        model.modifyArticles(vue.getjTextFieldCodeArticles().getText(), designationArticles, codeCategories, prixUnitaire);
+                        vue.getjTextFieldCodeArticles().enable(true);   
                     }
                     try {
                         refreshList();
@@ -144,13 +110,10 @@ public class ControleurArticles {
                 public void actionPerformed(ActionEvent e) {
 
                     try {
-                        vue.getjTextFieldDesignationArticles().setText("");
-                        vue.getjTextFieldCodeCategorie().setText("");
-                        vue.getjTextFieldPrixUnitaire().setText("");
-                        vue.getjButtonAjouter().setEnabled(true);
-                        vue.getjButtonAnnuler().setEnabled(true);
-                        vue.getjLabelInstructions().setText("Entrez les informations que vous vulez modifier");
-                        vue.getjLabelInstructions().setVisible(true);
+                        setInfo();
+                        vue.getjTextFieldCodeArticles().setText(String.valueOf(ArticlesList.get(i).getCodesArticles()));
+                        vue.getjTextFieldCodeArticles().enable(false);                        
+                        modifierActif = true;
 
                     } catch (Exception p) {
                         JOptionPane.showMessageDialog(null, "Erreur");
@@ -178,7 +141,7 @@ public class ControleurArticles {
                     }
                 }
             });
-        }catch(Exception a){
+        } catch (Exception a) {
             a.getMessage();
         }
     }
@@ -200,14 +163,10 @@ public class ControleurArticles {
         vue.getjButtonModifier().setToolTipText("Modifier un article");
     }
 
-    public void refreshList() throws SQLException {
+    public ArrayList<Articles> refreshList() throws SQLException {
 
-        ArticlesList = model.getArticles();
-        getRow(vue, ArticlesList, i);
-        for (int j = 0; j < ArticlesList.size() - 1; j++) {
-            System.out.println("j" + j + ArticlesList.get(j).getCodesArticles());
-        }
-        System.out.println(i);
+        return ArticlesList = model.getArticles();
+
     }
 
     public void setButtonsEnabledDisabled() {
@@ -225,5 +184,62 @@ public class ControleurArticles {
             i = ArticlesList.size() - 1;
             getRow(vue, ArticlesList, i);
         }
+    }
+
+    public void next() {
+        if (i == ArticlesList.size() - 1) {
+            JOptionPane.showMessageDialog(null, "Vous êtes au derniers enregistrement");
+        } else {
+            i++;
+            getRow(vue, ArticlesList, i);
+        }
+    }
+
+    public void getPremier() {
+        if (i == 0) {
+            JOptionPane.showMessageDialog(null, "Vous êtes déjà au premier enregistrement");
+        } else {
+            i = 0;
+            getRow(vue, ArticlesList, i);
+        }
+    }
+
+    public void previous() {
+        if (i == 0) {
+            JOptionPane.showMessageDialog(null, "Vous êtes au premier enregistrement");
+        } else {
+            i--;
+            getRow(vue, ArticlesList, i);
+        }
+    }
+
+    public void setInfo() {
+        vue.getjTextFieldCodeArticles().setText("");
+        vue.getjTextFieldDesignationArticles().setText("");
+        vue.getjTextFieldCodeCategorie().setText("");
+        vue.getjTextFieldPrixUnitaire().setText("");
+        vue.getjButtonAjouter().setEnabled(true);
+        vue.getjButtonAnnuler().setEnabled(true);
+        vue.getjButtonSuivant().setEnabled(false);
+        vue.getjButtonPrecedent().setEnabled(false);
+        vue.getjButtonPremier().setEnabled(false);
+        vue.getjButtonDernier().setEnabled(false);
+        vue.getjButtonNouveau().setEnabled(false);
+        vue.getjButtonModifier().setEnabled(false);
+        vue.getjButtonSupprimer().setEnabled(false);
+        vue.getjLabelInstructions().setText("Entrez les informations requise");
+        vue.getjLabelInstructions().setVisible(true);
+    }
+
+    public void setButtons() {
+        vue.getjButtonAjouter().setEnabled(false);
+        vue.getjButtonAnnuler().setEnabled(false);
+        vue.getjButtonSuivant().setEnabled(true);
+        vue.getjButtonPrecedent().setEnabled(true);
+        vue.getjButtonPremier().setEnabled(true);
+        vue.getjButtonDernier().setEnabled(true);
+        vue.getjButtonNouveau().setEnabled(true);
+        vue.getjButtonModifier().setEnabled(true);
+        vue.getjButtonSupprimer().setEnabled(true);
     }
 }
