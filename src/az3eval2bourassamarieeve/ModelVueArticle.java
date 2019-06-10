@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
  *
  * @author TQY_06
  */
-public class ModelVueArticles {
+public class ModelVueArticle {
 
     private static String url = "jdbc:derby://localhost:1527/Az3Eval2Bourassa";
     private static String user = "username";
@@ -37,8 +37,19 @@ public class ModelVueArticles {
     int codeCategories = 0;
     double prixUnitaire = 0.0;
 
-    public ArrayList<Articles> getArticles() throws SQLException {
-        ArrayList<Articles> ArticlesList = new ArrayList<>();
+    public Connection getConnexion() {
+        Connection connect = null;
+        try {
+            connect = DriverManager.getConnection(url, user, passwd);
+            System.out.println("Connexion successful");
+        } catch (SQLException a) {
+            a.printStackTrace();
+        }
+        return connect;
+    }
+
+    public ArrayList<Article> getArticles() throws SQLException {
+        ArrayList<Article> ArticlesList = new ArrayList<>();
         try {
             connect = DriverManager.getConnection(url, user, passwd);
             stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -51,7 +62,7 @@ public class ModelVueArticles {
                 designationArticles = resSet.getString(2);
                 codeCategories = resSet.getInt(3);
                 prixUnitaire = resSet.getDouble(4);
-                ArticlesList.add(new Articles(codesArticles, designationArticles, codeCategories, prixUnitaire));
+                ArticlesList.add(new Article(codesArticles, designationArticles, codeCategories, prixUnitaire));
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -61,7 +72,7 @@ public class ModelVueArticles {
                 stmt.close();
                 connect.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ModelVueArticles.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ModelVueArticle.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -79,15 +90,16 @@ public class ModelVueArticles {
             pstmt.setDouble(4, prixUnitaire);
             pstmt.setString(5, codesArticles);
             pstmt.executeUpdate();
-            System.out.println("Article successfully modified");
+            JOptionPane.showMessageDialog(null, "L'article a été modifier!!");
         } catch (Exception ex) {
             ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "L'article n'a pas pus etre modifier!!");
         } finally {
             try {
                 pstmt.close();
                 connect.close();
             } catch (Exception ex) {
-                Logger.getLogger(ModelVueArticles.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ModelVueArticle.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -99,14 +111,16 @@ public class ModelVueArticles {
             pstmt = connect.prepareStatement(sqlString);
             pstmt.setString(1, codeArticles);
             pstmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "L'article a été supprimer");
         } catch (Exception ex) {
             ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "L'article n'a pas été supprimer");
         } finally {
             try {
                 pstmt.close();
                 connect.close();
             } catch (Exception ex) {
-                Logger.getLogger(ModelVueArticles.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ModelVueArticle.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -123,15 +137,18 @@ public class ModelVueArticles {
             resSet.updateInt(3, codeCategories);
             resSet.updateDouble(4, prixUnitaire);
             resSet.insertRow();
+            JOptionPane.showMessageDialog(null, "L'article a bien été ajouter!");
+
         } catch (Exception ex) {
             ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "L'article n'a pas pus etre ajouter!");
         } finally {
             try {
                 resSet.close();
                 stmt.close();
                 connect.close();
             } catch (Exception ex) {
-                Logger.getLogger(ModelVueArticles.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ModelVueArticle.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

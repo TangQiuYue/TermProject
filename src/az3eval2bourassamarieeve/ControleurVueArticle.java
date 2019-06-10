@@ -15,22 +15,22 @@ import javax.swing.JOptionPane;
  *
  * @author TQY_06
  */
-public class ControleurArticles {
+public class ControleurVueArticle {
 
-    private ArticleVue vue;
-    private ModelVueArticles model;
-    private ArrayList<Articles> ArticlesList;
+    private VueArticle vue;
+    private ModelVueArticle model;
+    private ArrayList<Article> ArticlesList;
     private int i;
     private boolean nouveauActif, modifierActif;
 
-    public ControleurArticles(ArticleVue vue, ModelVueArticles model) throws SQLException {
+    public ControleurVueArticle(VueArticle vue, ModelVueArticle model) throws SQLException {
         try {
             this.vue = vue;
             this.model = model;
             i = 0;
             nouveauActif = false;
             modifierActif = false;
-            ArrayList<Articles> ArticlesList = refreshList();
+            ArrayList<Article> ArticlesList = refreshList();
             setTooTip();
             getRow(vue, ArticlesList, i);
 
@@ -76,7 +76,7 @@ public class ControleurArticles {
                     String codesArticles, designationArticles;
                     int codeCategories;
                     double prixUnitaire;
-
+                    
                     if (nouveauActif == true) {
                         codesArticles = vue.getjTextFieldCodeArticles().getText();
                         designationArticles = vue.getjTextFieldDesignationArticles().getText();
@@ -84,7 +84,7 @@ public class ControleurArticles {
                         prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
                         model.addArticles(codesArticles, designationArticles, codeCategories, prixUnitaire);
                         nouveauActif = false;
-                        JOptionPane.showMessageDialog(null, "L'article a bien été ajouter!");
+
                         setButtons();
                     }
 
@@ -95,7 +95,6 @@ public class ControleurArticles {
                         prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
                         model.modifyArticles(vue.getjTextFieldCodeArticles().getText(), designationArticles, codeCategories, prixUnitaire);
                         vue.getjTextFieldCodeArticles().enable(true);
-                        JOptionPane.showMessageDialog(null, "L'article a bien été modifier!");
                         setButtons();
                     }
                     try {
@@ -114,7 +113,7 @@ public class ControleurArticles {
                     try {
                         setInfo();
                         vue.getjTextFieldCodeArticles().setText(String.valueOf(ArticlesList.get(i).getCodesArticles()));
-                        vue.getjTextFieldCodeArticles().enable(false);
+                        vue.getjTextFieldCodeArticles().enableInputMethods(false);
                         modifierActif = true;
                     } catch (Exception p) {
                         JOptionPane.showMessageDialog(null, "Erreur");
@@ -127,7 +126,7 @@ public class ControleurArticles {
                 public void actionPerformed(ActionEvent e) {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
                     try {
-                       int dialogResult = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer cette article?", "ATTENTION", dialogButton);
+                        int dialogResult = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer cette article?", "ATTENTION", dialogButton);
                         if (dialogResult == 0) {
                             model.deleteArticles(vue.getjTextFieldCodeArticles().getText());
                             getRow(vue, ArticlesList, i);
@@ -139,7 +138,7 @@ public class ControleurArticles {
                     }
                     try {
                         refreshList();
-                        i --;
+                        i--;
                         getRow(vue, ArticlesList, i);
                     } catch (SQLException ref) {
                         JOptionPane.showMessageDialog(null, "Je n'ai pas pus mettre la base de donner a jours");
@@ -163,7 +162,7 @@ public class ControleurArticles {
         }
     }
 
-    public void getRow(ArticleVue vue, ArrayList<Articles> ArticlesList, int i) {
+    public void getRow(VueArticle vue, ArrayList<Article> ArticlesList, int i) {
         vue.getjTextFieldCodeArticles().setText(String.valueOf(ArticlesList.get(i).getCodesArticles()));
         vue.getjTextFieldDesignationArticles().setText(String.valueOf(ArticlesList.get(i).getDesignationArticles()));
         vue.getjTextFieldCodeCategorie().setText(String.valueOf(ArticlesList.get(i).getCodeCategories()));
@@ -180,7 +179,7 @@ public class ControleurArticles {
         vue.getjButtonModifier().setToolTipText("Modifier un article");
     }
 
-    public ArrayList<Articles> refreshList() throws SQLException {
+    public ArrayList<Article> refreshList() throws SQLException {
 
         return ArticlesList = model.getArticles();
 

@@ -9,16 +9,17 @@ package az3eval2bourassamarieeve;
  *
  * @author TQY_06
  */
-public class Articles {
-    private String  codesArticles;
+public class Article {
+
+    private String codesArticles;
     private String designationArticles;
     private int codeCategories;
     private double prixUnitaire;
 
-    public Articles() {
+    public Article() {
     }
 
-    public Articles(String codesArticles, String designationArticles, int codeCategories, double prixUnitaire) {
+    public Article(String codesArticles, String designationArticles, int codeCategories, double prixUnitaire) {
         this.codesArticles = codesArticles;
         this.designationArticles = designationArticles;
         this.codeCategories = codeCategories;
@@ -56,7 +57,5 @@ public class Articles {
     public void setPrixUnitaire(double prixUnitaire) {
         this.prixUnitaire = prixUnitaire;
     }
-    
-    
-    
+
 }
