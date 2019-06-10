@@ -106,11 +106,15 @@ public class ControleurVueArticle {
                     }
                 }
             });
-            /******************** BUG_REPORT ************************
+            /*****************************************************************************
+             *                      BUG_REPORT
+             * 
              * Quand un nouvelle item est ajouter, il n'est pas possible de le modifier sans 
              * sortire de l'application, ou encore le supprimer et le re-instaurer. 
              * L'option modifier sur un nouvel item apport un crash
-             */
+             * 
+             * ***************************************************************************/
+             
             vue.getjButtonModifier().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 
