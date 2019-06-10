@@ -73,9 +73,10 @@ public class ControleurArticles {
 
             vue.getjButtonAjouter().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                        String codesArticles, designationArticles;
-                        int codeCategories;
-                        double prixUnitaire;
+                    String codesArticles, designationArticles;
+                    int codeCategories;
+                    double prixUnitaire;
+
                     if (nouveauActif == true) {
                         codesArticles = vue.getjTextFieldCodeArticles().getText();
                         designationArticles = vue.getjTextFieldDesignationArticles().getText();
@@ -83,18 +84,19 @@ public class ControleurArticles {
                         prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
                         model.addArticles(codesArticles, designationArticles, codeCategories, prixUnitaire);
                         nouveauActif = false;
+                        JOptionPane.showMessageDialog(null, "L'article a bien été ajouter!");
                         setButtons();
-
                     }
 
                     if (modifierActif == true) {
-                        System.out.println("I went to the right place");
                         codesArticles = vue.getjTextFieldCodeArticles().getText();
                         designationArticles = vue.getjTextFieldDesignationArticles().getText();
                         codeCategories = Integer.parseInt(vue.getjTextFieldCodeCategorie().getText());
                         prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
                         model.modifyArticles(vue.getjTextFieldCodeArticles().getText(), designationArticles, codeCategories, prixUnitaire);
-                        vue.getjTextFieldCodeArticles().enable(true);   
+                        vue.getjTextFieldCodeArticles().enable(true);
+                        JOptionPane.showMessageDialog(null, "L'article a bien été modifier!");
+                        setButtons();
                     }
                     try {
                         refreshList();
@@ -112,29 +114,44 @@ public class ControleurArticles {
                     try {
                         setInfo();
                         vue.getjTextFieldCodeArticles().setText(String.valueOf(ArticlesList.get(i).getCodesArticles()));
-                        vue.getjTextFieldCodeArticles().enable(false);                        
+                        vue.getjTextFieldCodeArticles().enable(false);
                         modifierActif = true;
-
                     } catch (Exception p) {
                         JOptionPane.showMessageDialog(null, "Erreur");
                     }
                 }
 
             });
+
+            vue.getjButtonSupprimer().addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    try {
+                       int dialogResult = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer cette article?", "ATTENTION", dialogButton);
+                        if (dialogResult == 0) {
+                            model.deleteArticles(vue.getjTextFieldCodeArticles().getText());
+                            getRow(vue, ArticlesList, i);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "L'article n'a pas été supprimer");
+                        }
+                    } catch (Exception p) {
+                        JOptionPane.showMessageDialog(null, "Erreur");
+                    }
+                    try {
+                        refreshList();
+                        i --;
+                        getRow(vue, ArticlesList, i);
+                    } catch (SQLException ref) {
+                        JOptionPane.showMessageDialog(null, "Je n'ai pas pus mettre la base de donner a jours");
+                    }
+                }
+            });
+
             vue.getjButtonAnnuler().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 
                     try {
-                        vue.getjButtonAjouter().setEnabled(false);
-                        vue.getjButtonAnnuler().setEnabled(false);
-                        vue.getjButtonSuivant().setEnabled(true);
-                        vue.getjButtonPrecedent().setEnabled(true);
-                        vue.getjButtonPremier().setEnabled(true);
-                        vue.getjButtonDernier().setEnabled(true);
-                        vue.getjButtonNouveau().setEnabled(true);
-                        vue.getjButtonModifier().setEnabled(true);
-                        vue.getjButtonSupprimer().setEnabled(true);
-                        vue.getjLabelInstructions().setVisible(false);
+                        setButtons();
                         getRow(vue, ArticlesList, i);
                     } catch (Exception p) {
                         JOptionPane.showMessageDialog(null, "Erreur");

@@ -7,6 +7,7 @@ package az3eval2bourassamarieeve;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -30,30 +31,21 @@ public class ModelVueArticles {
     private String sqlString;
     private Statement stmt;
     private ResultSet resSet;
+    private PreparedStatement pstmt;
 
     String codesArticles = "", designationArticles = "";
     int codeCategories = 0;
     double prixUnitaire = 0.0;
-
-    public Connection connectToBD() {
-        try {
-            connect = DriverManager.getConnection(url, user, passwd);
-            System.out.println("Connexion Obtenue");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return connect;
-    }
 
     public ArrayList<Articles> getArticles() throws SQLException {
         ArrayList<Articles> ArticlesList = new ArrayList<>();
         try {
             connect = DriverManager.getConnection(url, user, passwd);
             stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-             sqlString = "Select * from ARTICLES";
+            sqlString = "Select * from ARTICLES";
 
             resSet = stmt.executeQuery(sqlString);
-                    resSet.next();
+            resSet.next();
             while (resSet.next()) {
                 codesArticles = resSet.getString(1);
                 designationArticles = resSet.getString(2);
@@ -79,21 +71,20 @@ public class ModelVueArticles {
     public void modifyArticles(String codesArticles, String designationArticles, int codeCategories, double prixUnitaire) {
         try {
             connect = DriverManager.getConnection(url, user, passwd);
-            stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            sqlString = "Select * from ARTICLES where CODESARTICLES = " + codesArticles.toUpperCase();
-            resSet = stmt.executeQuery(sqlString);
-            resSet.next();
-            resSet.updateString(2, designationArticles);
-            resSet.updateInt(3, codeCategories);
-            resSet.updateDouble(4, prixUnitaire);
-            resSet.updateRow();
+            sqlString = "update ARTICLES set codesArticles=?, designationArticles=?,codeCategories=?, prixUnitaires=? WHERE codesArticles=?";
+            pstmt = connect.prepareStatement(sqlString);
+            pstmt.setString(1, codesArticles);
+            pstmt.setString(2, designationArticles);
+            pstmt.setInt(3, codeCategories);
+            pstmt.setDouble(4, prixUnitaire);
+            pstmt.setString(5, codesArticles);
+            pstmt.executeUpdate();
             System.out.println("Article successfully modified");
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
             try {
-                resSet.close();
-                stmt.close();
+                pstmt.close();
                 connect.close();
             } catch (Exception ex) {
                 Logger.getLogger(ModelVueArticles.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,18 +95,15 @@ public class ModelVueArticles {
     public void deleteArticles(String codeArticles) {
         try {
             connect = DriverManager.getConnection(url, user, passwd);
-            stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            sqlString = "Select * from Articles where CodeArticles = " + codeArticles;
-            resSet = stmt.executeQuery(sqlString);
-            resSet.next();
-            resSet.deleteRow();
-            System.out.println("You have properly deleted this article from the database");
+            sqlString = "delete from ARTICLES where codesArticles=?";
+            pstmt = connect.prepareStatement(sqlString);
+            pstmt.setString(1, codeArticles);
+            pstmt.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
             try {
-                resSet.close();
-                stmt.close();
+                pstmt.close();
                 connect.close();
             } catch (Exception ex) {
                 Logger.getLogger(ModelVueArticles.class.getName()).log(Level.SEVERE, null, ex);
@@ -135,7 +123,6 @@ public class ModelVueArticles {
             resSet.updateInt(3, codeCategories);
             resSet.updateDouble(4, prixUnitaire);
             resSet.insertRow();
-            JOptionPane.showMessageDialog(null, "L'article a bien été ajouter!");
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
@@ -147,7 +134,7 @@ public class ModelVueArticles {
                 Logger.getLogger(ModelVueArticles.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
     }
 
 }
