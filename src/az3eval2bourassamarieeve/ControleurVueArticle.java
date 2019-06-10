@@ -62,7 +62,7 @@ public class ControleurVueArticle {
                 public void actionPerformed(ActionEvent e) {
 
                     try {
-                        setInfo();
+                        setButtonsDisabled();
                         nouveauActif = true;
 
                     } catch (Exception p) {
@@ -85,7 +85,7 @@ public class ControleurVueArticle {
                         model.addArticles(codesArticles, designationArticles, codeCategories, prixUnitaire);
                         nouveauActif = false;
 
-                        setButtons();
+                        setButtonsEnabled();
                     }
 
                     if (modifierActif == true) {
@@ -95,7 +95,7 @@ public class ControleurVueArticle {
                         prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
                         model.modifyArticles(vue.getjTextFieldCodeArticles().getText(), designationArticles, codeCategories, prixUnitaire);
                         vue.getjTextFieldCodeArticles().enable(true);
-                        setButtons();
+                        setButtonsEnabled();
                     }
                     try {
                         refreshList();
@@ -106,12 +106,16 @@ public class ControleurVueArticle {
                     }
                 }
             });
-
+            /******************** BUG_REPORT ************************
+             * Quand un nouvelle item est ajouter, il n'est pas possible de le modifier sans 
+             * sortire de l'application, ou encore le supprimer et le re-instaurer. 
+             * L'option modifier sur un nouvel item apport un crash
+             */
             vue.getjButtonModifier().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 
                     try {
-                        setInfo();
+                        setButtonsDisabled();
                         vue.getjTextFieldCodeArticles().setText(String.valueOf(ArticlesList.get(i).getCodesArticles()));
                         vue.getjTextFieldCodeArticles().enableInputMethods(false);
                         modifierActif = true;
@@ -129,6 +133,7 @@ public class ControleurVueArticle {
                         int dialogResult = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer cette article?", "ATTENTION", dialogButton);
                         if (dialogResult == 0) {
                             model.deleteArticles(vue.getjTextFieldCodeArticles().getText());
+                            refreshList();
                             getRow(vue, ArticlesList, i);
                         } else {
                             JOptionPane.showMessageDialog(null, "L'article n'a pas été supprimer");
@@ -150,7 +155,7 @@ public class ControleurVueArticle {
                 public void actionPerformed(ActionEvent e) {
 
                     try {
-                        setButtons();
+                        setButtonsEnabled();
                         getRow(vue, ArticlesList, i);
                     } catch (Exception p) {
                         JOptionPane.showMessageDialog(null, "Erreur");
@@ -180,16 +185,7 @@ public class ControleurVueArticle {
     }
 
     public ArrayList<Article> refreshList() throws SQLException {
-
         return ArticlesList = model.getArticles();
-
-    }
-
-    public void setButtonsEnabledDisabled() {
-        if (nouveauActif == false) {
-
-        }
-
     }
 
     public void getDernier() {
@@ -229,7 +225,7 @@ public class ControleurVueArticle {
         }
     }
 
-    public void setInfo() {
+    public void setButtonsDisabled() {
         vue.getjTextFieldCodeArticles().setText("");
         vue.getjTextFieldDesignationArticles().setText("");
         vue.getjTextFieldCodeCategorie().setText("");
@@ -247,7 +243,7 @@ public class ControleurVueArticle {
         vue.getjLabelInstructions().setVisible(true);
     }
 
-    public void setButtons() {
+    public void setButtonsEnabled() {
         vue.getjButtonAjouter().setEnabled(false);
         vue.getjButtonAnnuler().setEnabled(false);
         vue.getjButtonSuivant().setEnabled(true);
