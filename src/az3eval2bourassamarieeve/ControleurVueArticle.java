@@ -8,9 +8,8 @@ package az3eval2bourassamarieeve;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.IllegalFormatException;
 import javax.swing.JOptionPane;
 
 /**
@@ -65,10 +64,14 @@ public class ControleurVueArticle {
                 public void actionPerformed(ActionEvent e) {
 
                     try {
+                        vue.getjTextFieldCodeArticles().setText("");
+                        vue.getjTextFieldDesignationArticles().setText("");
+                        vue.getjTextFieldCodeCategorie().setText("");
+                        vue.getjTextFieldPrixUnitaire().setText("");
                         setButtonsDisabled();
                         nouveauActif = true;
 
-                    } catch (Exception p) {
+                    } catch (IllegalFormatException p) {
                         JOptionPane.showMessageDialog(null, "Erreur");
                     }
                 }
@@ -76,18 +79,22 @@ public class ControleurVueArticle {
 
             vue.getjButtonAjouter().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    String codesArticles, designationArticles;
+                    String codesArticles = vue.getjTextFieldCodeArticles().getText(), designationArticles;
                     int codeCategories;
                     double prixUnitaire;
 
                     if (nouveauActif == true) {
                         try {
                             model.closeConnection();
-                            codesArticles = vue.getjTextFieldCodeArticles().getText();
                             designationArticles = vue.getjTextFieldDesignationArticles().getText();
-                            codeCategories = Integer.parseInt(vue.getjTextFieldCodeCategorie().getText());
-                            prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
-                            model.addArticles(codesArticles, designationArticles, codeCategories, prixUnitaire);
+                            try {
+                                codeCategories = Integer.parseInt(vue.getjTextFieldCodeCategorie().getText());
+                                prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
+                                model.addArticles(codesArticles, designationArticles, codeCategories, prixUnitaire);
+                            } catch (NumberFormatException p) {
+                                JOptionPane.showMessageDialog(null, "Le Code Categories doit être un entier et le Prix Unitaire un double");
+                            }
+
                             nouveauActif = false;
                             setButtonsEnabled();
                         } catch (SQLException a) {
@@ -98,11 +105,14 @@ public class ControleurVueArticle {
                     if (modifierActif == true) {
                         try {
                             model.closeConnection();
-                            codesArticles = vue.getjTextFieldCodeArticles().getText();
                             designationArticles = vue.getjTextFieldDesignationArticles().getText();
-                            codeCategories = Integer.parseInt(vue.getjTextFieldCodeCategorie().getText());
-                            prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
-                            model.modifyArticles(vue.getjTextFieldCodeArticles().getText(), designationArticles, codeCategories, prixUnitaire);
+                            try {
+                                codeCategories = Integer.parseInt(vue.getjTextFieldCodeCategorie().getText());
+                                prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
+                                model.modifyArticles(vue.getjTextFieldCodeArticles().getText(), designationArticles, codeCategories, prixUnitaire);
+                            } catch (NumberFormatException p) {
+                                JOptionPane.showMessageDialog(null, "Le Code Categories doit être un entier et le Prix Unitaire un double");
+                            }
                             vue.getjTextFieldCodeArticles().enable(true);
                             modifierActif = false;
                             setButtonsEnabled();
@@ -112,7 +122,7 @@ public class ControleurVueArticle {
                     }
                     try {
                         getCursor();
-                        success = ArticlesList.next();
+                        // model.findArticle(codesArticles);
                         getRow(vue);
                     } catch (SQLException ref) {
                         JOptionPane.showMessageDialog(null, "Je n'ai pas pus mettre la base de donner a jours");
@@ -154,6 +164,7 @@ public class ControleurVueArticle {
                     }
                     try {
                         getCursor();
+                        getDernier();
                         getRow(vue);
                     } catch (SQLException ref) {
                         JOptionPane.showMessageDialog(null, "Je n'ai pas pus mettre la base de donner a jours");
@@ -254,10 +265,6 @@ public class ControleurVueArticle {
     }
 
     public void setButtonsDisabled() {
-        vue.getjTextFieldCodeArticles().setText("");
-        vue.getjTextFieldDesignationArticles().setText("");
-        vue.getjTextFieldCodeCategorie().setText("");
-        vue.getjTextFieldPrixUnitaire().setText("");
         vue.getjButtonAjouter().setEnabled(true);
         vue.getjButtonAnnuler().setEnabled(true);
         vue.getjButtonSuivant().setEnabled(false);

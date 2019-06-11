@@ -11,8 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -134,7 +132,18 @@ public class ModelVueArticle {
             }
         }
     }
-
+    public ResultSet findArticle(String codesArticles ) throws SQLException {
+        try {
+            connect = DriverManager.getConnection(url, user, passwd);
+            stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            sqlString = "Select * from ARTICLES where codesArticles =" + codesArticles;
+            resSet = stmt.executeQuery(sqlString);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return resSet;
+    }
+    
     public void closeConnection() throws SQLException {
         resSet.close();
         stmt.close();
