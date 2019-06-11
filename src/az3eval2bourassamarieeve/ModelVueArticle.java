@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,10 +71,10 @@ public class ModelVueArticle {
             pstmt.setDouble(4, prixUnitaire);
             pstmt.setString(5, codesArticles);
             pstmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "L'article a été modifier!!");
+            JOptionPane.showMessageDialog(null, "L'article a été modifie!!");
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "L'article n'a pas pus etre modifier!!");
+            JOptionPane.showMessageDialog(null, "L'article n'a pas pu etre modifie!!");
         } finally {
             try {
                 pstmt.close();
@@ -91,10 +92,10 @@ public class ModelVueArticle {
             pstmt = connect.prepareStatement(sqlString);
             pstmt.setString(1, codeArticles);
             pstmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "L'article a été supprimer");
+            JOptionPane.showMessageDialog(null, "L'article a été supprime");
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "L'article n'a pas été supprimer");
+            JOptionPane.showMessageDialog(null, "L'article n'a pas été supprime");
         } finally {
             try {
               pstmt.close();
@@ -105,23 +106,28 @@ public class ModelVueArticle {
         }
     }
 
-    public void addArticles(String codesArticles, String designationArticles, int codeCategories, double prixUnitaire) {
+    public void addArticles(String codesArticles, String designationArticles, int codeCategories, double prixUnitaire) throws SQLIntegrityConstraintViolationException {
         try {
             connect = DriverManager.getConnection(url, user, passwd);
             stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             sqlString = "Select * from Articles ";
             resSet = stmt.executeQuery(sqlString);
             resSet.moveToInsertRow();
+           try{
             resSet.updateString(1, codesArticles);
             resSet.updateString(2, designationArticles);
             resSet.updateInt(3, codeCategories);
             resSet.updateDouble(4, prixUnitaire);
             resSet.insertRow();
-            JOptionPane.showMessageDialog(null, "L'article a bien été ajouter!");
-
+            JOptionPane.showMessageDialog(null, "L'article a bien été ajoute!");
+           }catch(SQLIntegrityConstraintViolationException a )
+           {
+               JOptionPane.showMessageDialog(null, "Attenton! Le code de larticle doit être unique!" +
+                       "\nAttention! Verifier que le code categorie existe dans la base de donnee!");
+           }
         } catch (Exception ex) {
             ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "L'article n'a pas pus etre ajouter!");
+            JOptionPane.showMessageDialog(null, "L'article n'a pas pus etre ajoutee!");
         } finally {
             try {
                 resSet.close();
@@ -131,17 +137,6 @@ public class ModelVueArticle {
                 Logger.getLogger(ModelVueArticle.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
-    public ResultSet findArticle(String codesArticles ) throws SQLException {
-        try {
-            connect = DriverManager.getConnection(url, user, passwd);
-            stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            sqlString = "Select * from ARTICLES where codesArticles =" + codesArticles;
-            resSet = stmt.executeQuery(sqlString);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return resSet;
     }
     
     public void closeConnection() throws SQLException {

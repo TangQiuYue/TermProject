@@ -29,7 +29,7 @@ public class Az3Eval2BourassaMarieEve {
             
         
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Il-y a un problem avec la base de donnee");
+            JOptionPane.showMessageDialog(null, "Il y a un probleme avec la base de donnees");
         }
         
 

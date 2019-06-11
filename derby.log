@@ -12,3 +12,9 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=C:\Users\TQY_06\Desktop\TECHNIQUES DE DÉVELOPPEMENT DANS UN ENVIRONNEMENT GRAPHIQUE\Az3Eval2BourassaMarieEve
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Tue Jun 11 16:40:33 EDT 2019: Shutting down Derby engine
+----------------------------------------------------------------
+Tue Jun 11 16:40:33 EDT 2019:
+Shutting down instance a816c00e-016b-47ee-9add-ffff95df9665 on database directory C:\Users\TQY_06\Desktop\TECHNIQUES DE DÉVELOPPEMENT DANS UN ENVIRONNEMENT GRAPHIQUE\Az3Eval2BourassaMarieEve\Az3Eval2Bourassa with class loader sun.misc.Launcher$AppClassLoader@1d44bcfa 
+----------------------------------------------------------------

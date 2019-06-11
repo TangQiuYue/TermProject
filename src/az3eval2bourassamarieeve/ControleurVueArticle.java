@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.IllegalFormatException;
 import javax.swing.JOptionPane;
 
@@ -122,7 +123,6 @@ public class ControleurVueArticle {
                     }
                     try {
                         getCursor();
-                        // model.findArticle(codesArticles);
                         getRow(vue);
                     } catch (SQLException ref) {
                         JOptionPane.showMessageDialog(null, "Je n'ai pas pus mettre la base de donner a jours");
@@ -149,10 +149,10 @@ public class ControleurVueArticle {
                 public void actionPerformed(ActionEvent e) {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
                     try {
+                        model.closeConnection();
                         int dialogResult = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer cette article?", "ATTENTION", dialogButton);
 
                         if (dialogResult == 0) {
-                            model.closeConnection();
                             model.deleteArticles(vue.getjTextFieldCodeArticles().getText());
                             getCursor();
                             getRow(vue);
@@ -176,7 +176,11 @@ public class ControleurVueArticle {
                 public void actionPerformed(ActionEvent e) {
 
                     try {
+                        model.closeConnection();
                         setButtonsEnabled();
+                        vue.getjTextFieldCodeArticles().enable(true);
+                        getCursor();
+                        success = ArticlesList.next();
                         getRow(vue);
                     } catch (Exception p) {
                         JOptionPane.showMessageDialog(null, "Erreur");
@@ -288,5 +292,6 @@ public class ControleurVueArticle {
         vue.getjButtonNouveau().setEnabled(true);
         vue.getjButtonModifier().setEnabled(true);
         vue.getjButtonSupprimer().setEnabled(true);
+        vue.getjLabelInstructions().setText("");
     }
 }
