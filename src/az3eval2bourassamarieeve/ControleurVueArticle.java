@@ -120,14 +120,6 @@ public class ControleurVueArticle {
                 }
 
             });
-            /**
-             * ***************************************************************************
-             * BUG_REPORT * * Quand un nouvelle item est ajouter, il n'est pas
-             * possible de le * modifier sans sortire de l'application, ou
-             * encore le supprimer et * le re-instaurer. L'option modifier sur
-             * un nouvel item apport un * crash * *
-             * **************************************************************************
-             */
 
             vue.getjButtonModifier().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -216,7 +208,6 @@ public class ControleurVueArticle {
                 JOptionPane.showMessageDialog(null, "Vous êtes déjà au dernier enregistrement");
             } else {
                 success = ArticlesList.last();
-//                        success = ArticlesList.previous();
                 getRow(vue);
             }
         } catch (Exception e) {
@@ -234,7 +225,6 @@ public class ControleurVueArticle {
             }
         } catch (Exception e) {
         }
-
     }
 
     public void getPremier() {
@@ -243,7 +233,6 @@ public class ControleurVueArticle {
                 JOptionPane.showMessageDialog(null, "Vous êtes déjà au premier enregistrement");
             } else {
                 success = ArticlesList.first();
-//	        	success = ArticlesList.next();
                 getRow(vue);
             }
         } catch (Exception e) {
@@ -262,7 +251,6 @@ public class ControleurVueArticle {
             }
         } catch (Exception e) {
         }
-
     }
 
     public void setButtonsDisabled() {

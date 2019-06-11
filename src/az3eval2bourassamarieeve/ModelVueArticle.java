@@ -133,7 +133,6 @@ public class ModelVueArticle {
                 Logger.getLogger(ModelVueArticle.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
     }
 
     public void closeConnection() throws SQLException {
