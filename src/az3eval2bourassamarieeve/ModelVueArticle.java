@@ -48,38 +48,20 @@ public class ModelVueArticle {
         return connect;
     }
 
-    public ArrayList<Article> getArticles() throws SQLException {
-        ArrayList<Article> ArticlesList = new ArrayList<>();
+    public ResultSet getArticles() throws SQLException {
         try {
             connect = DriverManager.getConnection(url, user, passwd);
             stmt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             sqlString = "Select * from ARTICLES";
-
             resSet = stmt.executeQuery(sqlString);
-            resSet.next();
-            while (resSet.next()) {
-                codesArticles = resSet.getString(1);
-                designationArticles = resSet.getString(2);
-                codeCategories = resSet.getInt(3);
-                prixUnitaire = resSet.getDouble(4);
-                ArticlesList.add(new Article(codesArticles, designationArticles, codeCategories, prixUnitaire));
-            }
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                resSet.close();
-                stmt.close();
-                connect.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ModelVueArticle.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
         }
-        return ArticlesList;
+        return resSet;
     }
 
     public void modifyArticles(String codesArticles, String designationArticles, int codeCategories, double prixUnitaire) {
+
         try {
             connect = DriverManager.getConnection(url, user, passwd);
             sqlString = "update ARTICLES set codesArticles=?, designationArticles=?,codeCategories=?, prixUnitaires=? WHERE codesArticles=?";
@@ -117,7 +99,7 @@ public class ModelVueArticle {
             JOptionPane.showMessageDialog(null, "L'article n'a pas été supprimer");
         } finally {
             try {
-                pstmt.close();
+              pstmt.close();
                 connect.close();
             } catch (Exception ex) {
                 Logger.getLogger(ModelVueArticle.class.getName()).log(Level.SEVERE, null, ex);
@@ -154,4 +136,9 @@ public class ModelVueArticle {
 
     }
 
+    public void closeConnection() throws SQLException {
+        resSet.close();
+        stmt.close();
+        connect.close();
+    }
 }

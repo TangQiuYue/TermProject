@@ -3,12 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/TQY_06/Desktop/TECHNIQUES%20DE%20DÉVELOPPEMENT%20DANS%20UN%20ENVIRONNEMENT%20GRAPHIQUE/Az3Eval2BourassaMarieEve/src/az3eval2bourassamarieeve/ArticleVue.java</file>
+            <file>file:/C:/Users/TQY_06/Desktop/TECHNIQUES%20DE%20DÉVELOPPEMENT%20DANS%20UN%20ENVIRONNEMENT%20GRAPHIQUE/Az3Eval2BourassaMarieEve/src/az3eval2bourassamarieeve/ModelVueArticle.java</file>
             <file>file:/C:/Users/TQY_06/Desktop/TECHNIQUES%20DE%20DÉVELOPPEMENT%20DANS%20UN%20ENVIRONNEMENT%20GRAPHIQUE/Az3Eval2BourassaMarieEve/src/az3eval2bourassamarieeve/Az3Eval2BourassaMarieEve.java</file>
-            <file>file:/C:/Users/TQY_06/Desktop/TECHNIQUES%20DE%20DÉVELOPPEMENT%20DANS%20UN%20ENVIRONNEMENT%20GRAPHIQUE/Az3Eval2BourassaMarieEve/src/az3eval2bourassamarieeve/ModelVueArticles.java</file>
-            <file>file:/C:/Users/TQY_06/Desktop/TECHNIQUES%20DE%20DÉVELOPPEMENT%20DANS%20UN%20ENVIRONNEMENT%20GRAPHIQUE/Az3Eval2BourassaMarieEve/src/az3eval2bourassamarieeve/ControleurArticles.java</file>
-            <file>file:/C:/Users/TQY_06/Desktop/TECHNIQUES%20DE%20DÉVELOPPEMENT%20DANS%20UN%20ENVIRONNEMENT%20GRAPHIQUE/Az3Eval2BourassaMarieEve/src/az3eval2bourassamarieeve/Articles.java</file>
-            <file>file:/C:/Users/TQY_06/Desktop/TECHNIQUES%20DE%20DÉVELOPPEMENT%20DANS%20UN%20ENVIRONNEMENT%20GRAPHIQUE/Az3Eval2BourassaMarieEve/src/az3eval2bourassamarieeve/JFrameForBase.java</file>
+            <file>file:/C:/Users/TQY_06/Desktop/TECHNIQUES%20DE%20DÉVELOPPEMENT%20DANS%20UN%20ENVIRONNEMENT%20GRAPHIQUE/Az3Eval2BourassaMarieEve/src/az3eval2bourassamarieeve/ControleurVueArticle.java</file>
         </group>
     </open-files>
 </project-private>

@@ -26,10 +26,12 @@ public class Az3Eval2BourassaMarieEve {
             ControleurVueArticle control = new ControleurVueArticle(vue, model);
 
             vue.setVisible(true);
-
+            
+        
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Il-y a un problem avec la base de donnee");
         }
+        
 
     }
 }

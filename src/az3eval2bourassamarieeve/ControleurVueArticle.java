@@ -7,6 +7,8 @@ package az3eval2bourassamarieeve;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -19,20 +21,21 @@ public class ControleurVueArticle {
 
     private VueArticle vue;
     private ModelVueArticle model;
-    private ArrayList<Article> ArticlesList;
-    private int i;
+    private ResultSet ArticlesList;
     private boolean nouveauActif, modifierActif;
+    private boolean success;
 
     public ControleurVueArticle(VueArticle vue, ModelVueArticle model) throws SQLException {
         try {
             this.vue = vue;
             this.model = model;
-            i = 0;
             nouveauActif = false;
             modifierActif = false;
-            ArrayList<Article> ArticlesList = refreshList();
+            ArticlesList = getCursor();
             setTooTip();
-            getRow(vue, ArticlesList, i);
+            success = ArticlesList.first();
+            success = ArticlesList.next();
+            getRow(vue);
 
             vue.getjButtonPremier().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -76,58 +79,68 @@ public class ControleurVueArticle {
                     String codesArticles, designationArticles;
                     int codeCategories;
                     double prixUnitaire;
-                    
-                    if (nouveauActif == true) {
-                        codesArticles = vue.getjTextFieldCodeArticles().getText();
-                        designationArticles = vue.getjTextFieldDesignationArticles().getText();
-                        codeCategories = Integer.parseInt(vue.getjTextFieldCodeCategorie().getText());
-                        prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
-                        model.addArticles(codesArticles, designationArticles, codeCategories, prixUnitaire);
-                        nouveauActif = false;
 
-                        setButtonsEnabled();
+                    if (nouveauActif == true) {
+                        try {
+                            model.closeConnection();
+                            codesArticles = vue.getjTextFieldCodeArticles().getText();
+                            designationArticles = vue.getjTextFieldDesignationArticles().getText();
+                            codeCategories = Integer.parseInt(vue.getjTextFieldCodeCategorie().getText());
+                            prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
+                            model.addArticles(codesArticles, designationArticles, codeCategories, prixUnitaire);
+                            nouveauActif = false;
+                            setButtonsEnabled();
+                        } catch (SQLException a) {
+                            a.printStackTrace();
+                        }
                     }
 
                     if (modifierActif == true) {
-                        codesArticles = vue.getjTextFieldCodeArticles().getText();
-                        designationArticles = vue.getjTextFieldDesignationArticles().getText();
-                        codeCategories = Integer.parseInt(vue.getjTextFieldCodeCategorie().getText());
-                        prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
-                        model.modifyArticles(vue.getjTextFieldCodeArticles().getText(), designationArticles, codeCategories, prixUnitaire);
-                        vue.getjTextFieldCodeArticles().enable(true);
-                        setButtonsEnabled();
+                        try {
+                            model.closeConnection();
+                            codesArticles = vue.getjTextFieldCodeArticles().getText();
+                            designationArticles = vue.getjTextFieldDesignationArticles().getText();
+                            codeCategories = Integer.parseInt(vue.getjTextFieldCodeCategorie().getText());
+                            prixUnitaire = Double.parseDouble(vue.getjTextFieldPrixUnitaire().getText());
+                            model.modifyArticles(vue.getjTextFieldCodeArticles().getText(), designationArticles, codeCategories, prixUnitaire);
+                            vue.getjTextFieldCodeArticles().enable(true);
+                            modifierActif = false;
+                            setButtonsEnabled();
+                        } catch (SQLException a) {
+                            a.printStackTrace();
+                        }
                     }
                     try {
-                        refreshList();
-                        i = ArticlesList.size() - 1;
-                        getRow(vue, ArticlesList, i);
+                        getCursor();
+                        success = ArticlesList.next();
+                        getRow(vue);
                     } catch (SQLException ref) {
                         JOptionPane.showMessageDialog(null, "Je n'ai pas pus mettre la base de donner a jours");
                     }
                 }
+
             });
-            /*****************************************************************************
-             *                      BUG_REPORT
-             * 
-             * Quand un nouvelle item est ajouter, il n'est pas possible de le modifier sans 
-             * sortire de l'application, ou encore le supprimer et le re-instaurer. 
-             * L'option modifier sur un nouvel item apport un crash
-             * 
-             * ***************************************************************************/
-             
+            /**
+             * ***************************************************************************
+             * BUG_REPORT * * Quand un nouvelle item est ajouter, il n'est pas
+             * possible de le * modifier sans sortire de l'application, ou
+             * encore le supprimer et * le re-instaurer. L'option modifier sur
+             * un nouvel item apport un * crash * *
+             * **************************************************************************
+             */
+
             vue.getjButtonModifier().addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
 
                     try {
                         setButtonsDisabled();
-                        vue.getjTextFieldCodeArticles().setText(String.valueOf(ArticlesList.get(i).getCodesArticles()));
-                        vue.getjTextFieldCodeArticles().enableInputMethods(false);
+                        vue.getjTextFieldCodeArticles().setText(ArticlesList.getString("codesArticles"));
+                        vue.getjTextFieldCodeArticles().enable(false);
                         modifierActif = true;
                     } catch (Exception p) {
                         JOptionPane.showMessageDialog(null, "Erreur");
                     }
                 }
-
             });
 
             vue.getjButtonSupprimer().addActionListener(new ActionListener() {
@@ -135,10 +148,12 @@ public class ControleurVueArticle {
                     int dialogButton = JOptionPane.YES_NO_OPTION;
                     try {
                         int dialogResult = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer cette article?", "ATTENTION", dialogButton);
+
                         if (dialogResult == 0) {
+                            model.closeConnection();
                             model.deleteArticles(vue.getjTextFieldCodeArticles().getText());
-                            refreshList();
-                            getRow(vue, ArticlesList, i);
+                            getCursor();
+                            getRow(vue);
                         } else {
                             JOptionPane.showMessageDialog(null, "L'article n'a pas été supprimer");
                         }
@@ -146,9 +161,8 @@ public class ControleurVueArticle {
                         JOptionPane.showMessageDialog(null, "Erreur");
                     }
                     try {
-                        refreshList();
-                        i--;
-                        getRow(vue, ArticlesList, i);
+                        getCursor();
+                        getRow(vue);
                     } catch (SQLException ref) {
                         JOptionPane.showMessageDialog(null, "Je n'ai pas pus mettre la base de donner a jours");
                     }
@@ -160,7 +174,7 @@ public class ControleurVueArticle {
 
                     try {
                         setButtonsEnabled();
-                        getRow(vue, ArticlesList, i);
+                        getRow(vue);
                     } catch (Exception p) {
                         JOptionPane.showMessageDialog(null, "Erreur");
                     }
@@ -169,13 +183,17 @@ public class ControleurVueArticle {
         } catch (Exception a) {
             a.getMessage();
         }
+
     }
 
-    public void getRow(VueArticle vue, ArrayList<Article> ArticlesList, int i) {
-        vue.getjTextFieldCodeArticles().setText(String.valueOf(ArticlesList.get(i).getCodesArticles()));
-        vue.getjTextFieldDesignationArticles().setText(String.valueOf(ArticlesList.get(i).getDesignationArticles()));
-        vue.getjTextFieldCodeCategorie().setText(String.valueOf(ArticlesList.get(i).getCodeCategories()));
-        vue.getjTextFieldPrixUnitaire().setText(String.valueOf(ArticlesList.get(i).getPrixUnitaire()));
+    public void getRow(VueArticle vue) {
+        try {
+            vue.getjTextFieldCodeArticles().setText(ArticlesList.getString("codesArticles"));
+            vue.getjTextFieldDesignationArticles().setText(ArticlesList.getString("designationArticles"));
+            vue.getjTextFieldCodeCategorie().setText(ArticlesList.getString("codeCategories"));
+            vue.getjTextFieldPrixUnitaire().setText(ArticlesList.getString("prixUnitaires"));
+        } catch (Exception e) {
+        }
     }
 
     public void setTooTip() {
@@ -188,45 +206,63 @@ public class ControleurVueArticle {
         vue.getjButtonModifier().setToolTipText("Modifier un article");
     }
 
-    public ArrayList<Article> refreshList() throws SQLException {
+    public ResultSet getCursor() throws SQLException {
         return ArticlesList = model.getArticles();
     }
 
     public void getDernier() {
-
-        if (i == ArticlesList.size() - 1) {
-            JOptionPane.showMessageDialog(null, "Vous êtes déjà au dernier enregistrement");
-        } else {
-            i = ArticlesList.size() - 1;
-            getRow(vue, ArticlesList, i);
+        try {
+            if (ArticlesList.isLast()) {
+                JOptionPane.showMessageDialog(null, "Vous êtes déjà au dernier enregistrement");
+            } else {
+                success = ArticlesList.last();
+//                        success = ArticlesList.previous();
+                getRow(vue);
+            }
+        } catch (Exception e) {
         }
     }
 
     public void next() {
-        if (i == ArticlesList.size() - 1) {
-            JOptionPane.showMessageDialog(null, "Vous êtes au derniers enregistrement");
-        } else {
-            i++;
-            getRow(vue, ArticlesList, i);
+        try {
+
+            if (ArticlesList.isLast()) {
+                JOptionPane.showMessageDialog(null, "Vous êtes au derniers enregistrement");
+            } else {
+                success = ArticlesList.next();
+                getRow(vue);
+            }
+        } catch (Exception e) {
         }
+
     }
 
     public void getPremier() {
-        if (i == 0) {
-            JOptionPane.showMessageDialog(null, "Vous êtes déjà au premier enregistrement");
-        } else {
-            i = 0;
-            getRow(vue, ArticlesList, i);
+        try {
+            if (ArticlesList.isFirst()) {
+                JOptionPane.showMessageDialog(null, "Vous êtes déjà au premier enregistrement");
+            } else {
+                success = ArticlesList.first();
+//	        	success = ArticlesList.next();
+                getRow(vue);
+            }
+        } catch (Exception e) {
         }
+
     }
 
     public void previous() {
-        if (i == 0) {
-            JOptionPane.showMessageDialog(null, "Vous êtes au premier enregistrement");
-        } else {
-            i--;
-            getRow(vue, ArticlesList, i);
+        try {
+
+            if (ArticlesList.isFirst()) {
+                JOptionPane.showMessageDialog(null, "Vous êtes au premier enregistrement");
+            } else {
+                success = ArticlesList.previous();
+                getRow(vue);
+            }
+        } catch (Exception e) {
         }
+
     }
 
     public void setButtonsDisabled() {
